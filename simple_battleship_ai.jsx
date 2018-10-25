@@ -167,6 +167,27 @@ class Game extends React.Component {
           probSquares: Array(100).fill(0)
         }
       ],
+      probGuess: [],
+      pirateShipCount: 5,
+      aiAmmo: 30,
+      stepNumber: 0,
+      pirateIsNext: true,
+      start : false
+    });
+  }
+  
+  handleReplay() {
+    this.setState({
+      history: [
+        {
+          squares: Array(100).fill(null)
+        }
+      ],
+      probGrid: [
+        {
+          probSquares: Array(100).fill(0)
+        }
+      ],
       pirateShipCount: 5,
       aiAmmo: 30,
       stepNumber: 0,
@@ -207,7 +228,10 @@ class Game extends React.Component {
           <button onClick={e => this.handleStart()}>START</button>
         </div>
         <div className="try-again">
-          <button onClick={e => this.handleReset()}>Try Again</button>
+          <button onClick={e => this.handleReplay()}>Try Again</button>
+        </div>
+        <div className="reset">
+          <button onClick={e => this.handleReset()}>Reset</button>
         </div>
       </div>
     );
