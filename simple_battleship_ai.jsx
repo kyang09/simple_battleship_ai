@@ -18,25 +18,17 @@ class Board extends React.Component {
   }
   render() {
     let grid1 = [];
-    let grid2 = [];
     let g_key = 0;
     let key_count = 0;
     for (let i = 0; i < 10; i++) {
       let rows1 = [];
-      let rows2 = [];
       for (let j = 0; j < 10; j++) {
         rows1.push(this.renderSquare(key_count))
-        rows2.push(this.renderSquare(key_count))
         key_count++;
       }
       grid1.push(
         <div className="board-row" key={g_key}>
           {rows1}
-        </div>
-      );
-      grid2.push(
-        <div className="board-row" key={g_key + "two"}>
-          {rows2}
         </div>
       );
       g_key++;
@@ -100,10 +92,24 @@ class Game extends React.Component {
     const squares = current.squares.slice();
     
     this.state.start = true;
-    for (let i = 0; i < squares.length; i++) {
-      if (squares[i] == "P") {
-        squares[i] = "AI"; 
+    let probGuess = [];
+    let rowDisplacement = 0;
+    let choicesPerRow = Math.floor(this.state.aiAmmo);
+    while (this.state.aiAmmo > 0) {
+      for (let i = 0; i < choicesPerRow; i++) {
+        let randomSquareKey = (Math.floor(Math.random() * 9) + 0) + rowDisplacement;
+        if (squares[randomSquareKey] == "P") {
+          squares[randomSquareKey] = "AI";
+          this.state.probGrid[randomSquareKey] += 1;
+          this.state.pirateShipCount++; // counting back up to original ship count.
+        }
+        else {
+          squares[randomSquareKey] = "AI";
+          this.state.probGrid[randomSquareKey] += -1;
+        }
+        this.state.aiAmmo--;
       }
+      rowDisplacement += 10;
     }
     
     this.setState({
