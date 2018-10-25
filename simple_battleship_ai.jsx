@@ -61,7 +61,8 @@ class Game extends React.Component {
       aiAmmo: 30,
       stepNumber: 0,
       pirateIsNext: true,
-      start : false
+      start: false,
+      winner: null
     };
   }
 
@@ -69,12 +70,11 @@ class Game extends React.Component {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
-    if (calculateWinner(squares) || squares[i]) {
-      return;
-    }
     if (this.state.start == false && this.state.pirateShipCount > 0) {
-      squares[i] = "P";
-      this.state.pirateShipCount--;
+      if (squares[i] != "P") {
+        squares[i] = "P";
+        this.state.pirateShipCount--;
+      }
     }
     this.setState({
       history: history.concat([
@@ -88,15 +88,10 @@ class Game extends React.Component {
   }
 
   handleStart() {
-    for (let i = 0; i < this.state.probGuess.length; i++) {
-      console.log(this.state.probGuess[i]);
-    }
-    console.log("end");
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
     
-    this.state.start = true;
     let rowDisplacement = 0;
     let choicesPerRow = Math.floor(100/this.state.aiAmmo);
     while (this.state.aiAmmo > 0) {
@@ -143,6 +138,13 @@ class Game extends React.Component {
       rowDisplacement += 10;
     }
     
+    if (this.state.pirateShipCount == 5) {
+      this.state.winner = "AI";
+    }
+    else {
+      this.state.winner = "Pirate";
+    }
+    
     this.setState({
       history: history.concat([
         {
@@ -151,8 +153,8 @@ class Game extends React.Component {
       ]),
       stepNumber: history.length,
       pirateIsNext: !this.state.pirateIsNext,
-      start: false
-    });
+      start: true
+    }, () => {console.log(this.state.start)});
   }
   
   handleReset() {
@@ -172,7 +174,8 @@ class Game extends React.Component {
       aiAmmo: 30,
       stepNumber: 0,
       pirateIsNext: true,
-      start : false
+      start: false,
+      win: false
     });
   }
   
@@ -192,19 +195,19 @@ class Game extends React.Component {
       aiAmmo: 30,
       stepNumber: 0,
       pirateIsNext: true,
-      start : false
+      start: false,
+      win: false
     });
   }
   
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winner = calculateWinner(current.squares);
+    const winner = this.state.winner;
 
     let status;
     if (winner) {
       status = "Winner: " + winner;
-      this.state.start = false;
     } 
     else if(this.state.start == false) {
       status = "Pirate, place your 5 pieces and START GAME?";
@@ -239,8 +242,3 @@ class Game extends React.Component {
 }
 
 ReactDOM.render(<Game />, document.getElementById("root"));
-
-function calculateWinner(squares) {
-  // Check if all pieces from
-  return null;
-}
