@@ -18,6 +18,14 @@ Here's the codepen I used to develop this simple app: [https://codepen.io/kyang0
 5. Keep repeating steps 3 and 4 until you don't want to play anymore.
 6. If you win or would like to reset the game and the AI, press the "RESET" button.
 
+## Future Improvements
+
+The AI system currently just looks at each row, randomly picks floor((# of board cells) / (# of pirate ships)) cells, and goes through a list of possible cells to try based on historical events.
+
+There are many more ways to implement the AI better.
+To improve the current AI system, the AI can cluster the searches closely using the historical findings as a "seed".
+Human psychology can also be applied to the AI by using some common behaviors from human players.
+
 ## Built With
 
 * ReactJS
