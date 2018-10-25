@@ -28,7 +28,7 @@ Human psychology can also be applied to the AI by using some common behaviors fr
 
 ## Built With
 
-* ReactJS ([production.min.js](https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.production.min.js) and [react-dom.production.min.js](https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.production.min.js))
+* ReactJS ([react.production.min.js](https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.production.min.js) and [react-dom.production.min.js](https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.production.min.js))
 * Babel
 * HTML
 * CSS
