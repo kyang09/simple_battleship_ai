@@ -12,7 +12,7 @@ Here's the codepen I used to develop this simple app: [https://codepen.io/kyang0
 ## Instructions
 
 1. Before starting, place all 5 pirate ships on the board. Each pirate ship cell will be marked as "P".
-2. Once all 5 ships have been placed, press the "START" button. The AI will try to attack the pirate ships.
+2. Once all 5 ships have been placed, press the "START" button. The AI will try to attack the pirate ships, marking cells with "AI".
 3. Press the "Try Again" button to set all 5 pirate ships in another (or the same) formation.
 4. Press "START" again.
 5. Keep repeating steps 3 and 4 until you don't want to play anymore.
@@ -28,7 +28,8 @@ Human psychology can also be applied to the AI by using some common behaviors fr
 
 ## Built With
 
-* ReactJS
+* ReactJS ([production.min.js](https://cdnjs.cloudflare.com/ajax/libs/react/16.4.2/umd/react.production.min.js) and [react-dom.production.min.js](https://cdnjs.cloudflare.com/ajax/libs/react-dom/16.4.2/umd/react-dom.production.min.js))
+* Babel
 * HTML
 * CSS
 
