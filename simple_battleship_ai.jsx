@@ -56,6 +56,7 @@ class Game extends React.Component {
           probSquares: Array(100).fill(0)
         }
       ],
+      probGuess: [],
       pirateShipCount: 5,
       aiAmmo: 30,
       stepNumber: 0,
@@ -87,19 +88,41 @@ class Game extends React.Component {
   }
 
   handleStart() {
+    for (let i = 0; i < this.state.probGuess.length; i++) {
+      console.log(this.state.probGuess[i]);
+    }
+    console.log("end");
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
     const squares = current.squares.slice();
     
     this.state.start = true;
-    let probGuess = [];
     let rowDisplacement = 0;
     let choicesPerRow = Math.floor(100/this.state.aiAmmo);
     while (this.state.aiAmmo > 0) {
+      for (let k = 0; k < this.state.probGuess.length; k++) {
+        if (squares[this.state.probGuess[k]] == "AI") {
+          this.state.probGrid[this.state.probGuess[k]] += -1;
+          if (this.state.probGrid[this.state.probGuess[k]] >= 0) {
+            this.state.probGrid.splice(this.state.probGuess[k], 1);
+          }
+          continue;
+        }
+        if (squares[this.state.probGuess[k]] == "P") {
+          squares[this.state.probGuess[k]] = "AI";
+          if (this.state.probGrid[this.state.probGuess[k]] < Number.MAX_SAFE_INTEGER) {
+            this.state.probGrid[this.state.probGuess[k]] += 1;
+          }
+          this.state.probGuess.push(this.state.probGuess[k]);
+          this.state.pirateShipCount++; // counting back up to original ship count.
+          this.state.aiAmmo--;
+        }
+      }
       let i = 0;
-      while (i < choicesPerRow) {
+      while (i < choicesPerRow && this.state.aiAmmo > 0) {
         let randomSquareKey = (Math.floor(Math.random() * 9) + 0) + rowDisplacement;
         if (squares[randomSquareKey] == "AI") {
+          this.state.probGrid[randomSquareKey] += -1;
           continue;
         }
         if (squares[randomSquareKey] == "P") {
@@ -107,6 +130,7 @@ class Game extends React.Component {
           if (this.state.probGrid[randomSquareKey] < Number.MAX_SAFE_INTEGER) {
             this.state.probGrid[randomSquareKey] += 1;
           }
+          this.state.probGuess.push(randomSquareKey);
           this.state.pirateShipCount++; // counting back up to original ship count.
         }
         else {
