@@ -1,4 +1,7 @@
-function Square(props) {
+/**
+ * Returns a board cell represented as a clickable button.
+ */
+function Cell(props) {
   return (
     <button className="square" onClick={props.onClick}>
       {props.value}
@@ -6,24 +9,30 @@ function Square(props) {
   );
 }
 
+/**
+ * Class representing the Board for the game.
+ */
 class Board extends React.Component {
-  renderSquare(i) {
+  renderCell(i) {
     return (
-      <Square
+      <Cell
         value={this.props.squares[i]}
         onClick={() => this.props.onClick(i)}
         key={i}
         />
     );
   }
+  
   render() {
-    let grid1 = [];
-    let g_key = 0;
-    let key_count = 0;
+    let grid1 = []; // Init the grid presenting the board.
+    let g_key = 0; // Unique key for React efficiency on mutating DOM tree.
+    let key_count = 0; // Cell numbering.
+    
+    // Init the board.
     for (let i = 0; i < 10; i++) {
       let rows1 = [];
       for (let j = 0; j < 10; j++) {
-        rows1.push(this.renderSquare(key_count))
+        rows1.push(this.renderCell(key_count))
         key_count++;
       }
       grid1.push(
@@ -42,30 +51,36 @@ class Board extends React.Component {
   }
 }
 
+/**
+ * Class representing the state of the Game and logic for rules.
+ */
 class Game extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      history: [
+      history: [ // Keeps track of current state of the board.
         {
           squares: Array(100).fill(null)
         }
       ],
-      probGrid: [
+      probGrid: [ // Keeps track of weights of each cell being picked.
         {
           probSquares: Array(100).fill(0)
         }
       ],
-      probGuess: [],
-      pirateShipCount: 5,
-      aiAmmo: 30,
-      stepNumber: 0,
-      pirateIsNext: true,
-      start: false,
-      winner: null
+      probGuess: [], // Keeps track of guesses to try.
+      pirateShipCount: 5, // Number of pirate ships allowed.
+      aiAmmo: 30, // Ammo capacity of AI system/
+      stepNumber: 0, // Step history count for keeping track of current state of history.
+      pirateIsNext: true, // Boolean of whether the pirate moves next.
+      start: false, // Keeps track of the whether AI should start playing.
+      winner: null // Keeps track of who won the current game.
     };
   }
 
+  /**
+   * Handles clicks of Cells in the Board.
+   */
   handleClick(i) {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
@@ -87,6 +102,10 @@ class Game extends React.Component {
     });
   }
 
+  /*
+   * Handles the START button.
+   * Allows the AI to start playing the game.
+   */
   handleStart() {
     const history = this.state.history.slice(0, this.state.stepNumber + 1);
     const current = history[history.length - 1];
@@ -154,9 +173,38 @@ class Game extends React.Component {
       stepNumber: history.length,
       pirateIsNext: !this.state.pirateIsNext,
       start: true
-    }, () => {console.log(this.state.start)});
+    });
   }
   
+  /**
+   * Handles the Try Again button.
+   * Starts a new round while keeping the state of the board/game.
+   */
+  handleReplay() {
+    this.setState({
+      history: [
+        {
+          squares: Array(100).fill(null)
+        }
+      ],
+      probGrid: [
+        {
+          probSquares: Array(100).fill(0)
+        }
+      ],
+      pirateShipCount: 5,
+      aiAmmo: 30,
+      stepNumber: 0,
+      pirateIsNext: true,
+      start: false,
+      win: false
+    });
+  }
+  
+  /**
+   * Handles the RESET button.
+   * Resets the board and game.
+   */
   handleReset() {
     this.setState({
       history: [
@@ -170,27 +218,6 @@ class Game extends React.Component {
         }
       ],
       probGuess: [],
-      pirateShipCount: 5,
-      aiAmmo: 30,
-      stepNumber: 0,
-      pirateIsNext: true,
-      start: false,
-      win: false
-    });
-  }
-  
-  handleReplay() {
-    this.setState({
-      history: [
-        {
-          squares: Array(100).fill(null)
-        }
-      ],
-      probGrid: [
-        {
-          probSquares: Array(100).fill(0)
-        }
-      ],
       pirateShipCount: 5,
       aiAmmo: 30,
       stepNumber: 0,
