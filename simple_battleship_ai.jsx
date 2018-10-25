@@ -35,7 +35,7 @@ class Board extends React.Component {
     }
     return (
       <div>
-        <div className="board-label">Pirate Board</div>
+        <div className="board-label">Please place all 5 pirate ships!</div>
         <div>{grid1}</div>
       </div>
     );
@@ -115,7 +115,7 @@ class Game extends React.Component {
       }
       let i = 0;
       while (i < choicesPerRow && this.state.aiAmmo > 0) {
-        let randomSquareKey = (Math.floor(Math.random() * 9) + 0) + rowDisplacement;
+        let randomSquareKey = (Math.floor(Math.random() * 10) + 0) + rowDisplacement;
         if (squares[randomSquareKey] == "AI") {
           this.state.probGrid[randomSquareKey] += -1;
           continue;
