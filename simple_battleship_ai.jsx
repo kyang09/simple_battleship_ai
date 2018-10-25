@@ -94,13 +94,19 @@ class Game extends React.Component {
     this.state.start = true;
     let probGuess = [];
     let rowDisplacement = 0;
-    let choicesPerRow = Math.floor(this.state.aiAmmo);
+    let choicesPerRow = Math.floor(100/this.state.aiAmmo);
     while (this.state.aiAmmo > 0) {
-      for (let i = 0; i < choicesPerRow; i++) {
+      let i = 0;
+      while (i < choicesPerRow) {
         let randomSquareKey = (Math.floor(Math.random() * 9) + 0) + rowDisplacement;
+        if (squares[randomSquareKey] == "AI") {
+          continue;
+        }
         if (squares[randomSquareKey] == "P") {
           squares[randomSquareKey] = "AI";
-          this.state.probGrid[randomSquareKey] += 1;
+          if (this.state.probGrid[randomSquareKey] < Number.MAX_SAFE_INTEGER) {
+            this.state.probGrid[randomSquareKey] += 1;
+          }
           this.state.pirateShipCount++; // counting back up to original ship count.
         }
         else {
@@ -108,6 +114,7 @@ class Game extends React.Component {
           this.state.probGrid[randomSquareKey] += -1;
         }
         this.state.aiAmmo--;
+        i++;
       }
       rowDisplacement += 10;
     }
@@ -119,7 +126,28 @@ class Game extends React.Component {
         }
       ]),
       stepNumber: history.length,
-      pirateIsNext: !this.state.pirateIsNext
+      pirateIsNext: !this.state.pirateIsNext,
+      start: false
+    });
+  }
+  
+  handleReset() {
+    this.setState({
+      history: [
+        {
+          squares: Array(100).fill(null)
+        }
+      ],
+      probGrid: [
+        {
+          probSquares: Array(100).fill(0)
+        }
+      ],
+      pirateShipCount: 5,
+      aiAmmo: 30,
+      stepNumber: 0,
+      pirateIsNext: true,
+      start : false
     });
   }
   
@@ -153,6 +181,9 @@ class Game extends React.Component {
         </div>
         <div className="start">
           <button onClick={e => this.handleStart()}>START</button>
+        </div>
+        <div className="try-again">
+          <button onClick={e => this.handleReset()}>Try Again</button>
         </div>
       </div>
     );
