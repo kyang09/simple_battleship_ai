@@ -59,7 +59,13 @@ class Game extends React.Component {
           squares: Array(100).fill(null)
         }
       ],
+      probGrid: [
+        {
+          probSquares: Array(100).fill(0)
+        }
+      ],
       pirateShipCount: 5,
+      aiAmmo: 30,
       stepNumber: 0,
       pirateIsNext: true,
       start : false
@@ -95,7 +101,9 @@ class Game extends React.Component {
     
     this.state.start = true;
     for (let i = 0; i < squares.length; i++) {
-      squares[i] = "AI";
+      if (squares[i] == "P") {
+        squares[i] = "AI"; 
+      }
     }
     
     this.setState({
