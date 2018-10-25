@@ -45,8 +45,6 @@ class Board extends React.Component {
       <div>
         <div className="board-label">Pirate Board</div>
         <div>{grid1}</div>
-        <div className="board-label">AI Board</div>
-        <div className="inline-blk">{grid2}</div>
       </div>
     );
   }
@@ -58,11 +56,13 @@ class Game extends React.Component {
     this.state = {
       history: [
         {
-          squares: Array(9).fill(null)
+          squares: Array(100).fill(null)
         }
       ],
+      pirateShipCount: 5,
       stepNumber: 0,
-      pirateIsNext: true
+      pirateIsNext: true,
+      start : false
     };
   }
 
@@ -73,7 +73,10 @@ class Game extends React.Component {
     if (calculateWinner(squares) || squares[i]) {
       return;
     }
-    squares[i] = this.state.pirateIsNext ? "P" : "AI";
+    if (this.state.start == false && this.state.pirateShipCount > 0) {
+      squares[i] = "P";
+      this.state.pirateShipCount--;
+    }
     this.setState({
       history: history.concat([
         {
@@ -85,6 +88,27 @@ class Game extends React.Component {
     });
   }
 
+  handleStart() {
+    const history = this.state.history.slice(0, this.state.stepNumber + 1);
+    const current = history[history.length - 1];
+    const squares = current.squares.slice();
+    
+    this.state.start = true;
+    for (let i = 0; i < squares.length; i++) {
+      squares[i] = "AI";
+    }
+    
+    this.setState({
+      history: history.concat([
+        {
+          squares: squares
+        }
+      ]),
+      stepNumber: history.length,
+      pirateIsNext: !this.state.pirateIsNext
+    });
+  }
+  
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
@@ -93,7 +117,12 @@ class Game extends React.Component {
     let status;
     if (winner) {
       status = "Winner: " + winner;
-    } else {
+      this.state.start = false;
+    } 
+    else if(this.state.start == false) {
+      status = "Pirate, place your 5 pieces and START GAME?";
+    }
+    else {
       status = "Next player: " + (this.state.pirateIsNext ? "Pirate" : "AI");
     }
 
@@ -107,6 +136,9 @@ class Game extends React.Component {
         </div>
         <div className="game-info">
           <div>{status}</div>
+        </div>
+        <div className="start">
+          <button onClick={e => this.handleStart()}>START</button>
         </div>
       </div>
     );
