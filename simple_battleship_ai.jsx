@@ -97,7 +97,7 @@ class Game extends React.Component {
     while (this.state.aiAmmo > 0) {
       for (let k = 0; k < this.state.probGuess.length; k++) {
         if (squares[this.state.probGuess[k]] == "AI") {
-          this.state.probGrid[this.state.probGuess[k]] += -1;
+          this.state.probGrid[this.state.probGuess[k]] += -2;
           if (this.state.probGrid[this.state.probGuess[k]] >= 0) {
             this.state.probGrid.splice(this.state.probGuess[k], 1);
           }
@@ -117,7 +117,7 @@ class Game extends React.Component {
       while (i < choicesPerRow && this.state.aiAmmo > 0) {
         let randomSquareKey = (Math.floor(Math.random() * 10) + 0) + rowDisplacement;
         if (squares[randomSquareKey] == "AI") {
-          this.state.probGrid[randomSquareKey] += -1;
+          this.state.probGrid[randomSquareKey] += -2;
           continue;
         }
         if (squares[randomSquareKey] == "P") {
