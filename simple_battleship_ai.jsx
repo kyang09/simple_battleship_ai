@@ -228,13 +228,13 @@ class Game extends React.Component {
           <div>{status}</div>
         </div>
         <div className="start">
-          <button onClick={e => this.handleStart()}>START</button>
+          <button id="start-button" onClick={e => this.handleStart()}>START</button>
         </div>
         <div className="try-again">
-          <button onClick={e => this.handleReplay()}>Try Again</button>
+          <button id="replay-button" onClick={e => this.handleReplay()}>Try Again</button>
         </div>
         <div className="reset">
-          <button onClick={e => this.handleReset()}>Reset</button>
+          <button id="reset-button" onClick={e => this.handleReset()}>RESET</button>
         </div>
       </div>
     );
