@@ -1,16 +1,5 @@
 body {
-  font: 14px "Century Gothic", Futura, sans-serif;
   margin: 20px;
-}
-
-ol, ul {
-  padding-left: 30px;
-}
-
-.board-row:after {
-  clear: both;
-  content: "";
-  display: table;
 }
 
 .status {
@@ -36,10 +25,6 @@ ol, ul {
   outline: none;
 }
 
-.kbd-navigation .square:focus {
-  background: #ddd;
-}
-
 .game {
   display: flex;
   flex-direction: row;
@@ -56,4 +41,18 @@ ol, ul {
 
 .board-label {
   margin-top: 40px;
+}
+
+.start {
+  position: absolute;
+}
+
+.try-again {
+  position: absolute;
+  margin-left: 93px;
+}
+
+.reset {
+  position: absolute;
+  margin-left: 200px;
 }
